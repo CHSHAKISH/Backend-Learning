@@ -1,0 +1,15 @@
+{
+  "name": "video-streaming",
+  "version": "1.0.0",
+  "description": "Here I am going to make the backend for the video streaming website with twitter integrated in it.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "backend",
+    "node"
+  ],
+  "author": "CH Shakish",
+  "license": "ISC"
+}
