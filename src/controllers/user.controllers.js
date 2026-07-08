@@ -3,6 +3,8 @@ import { ApiError } from "../utils/ApiError.js"
 import { Users } from "../models/users.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
+import { verifyJWT } from "../middlewares/auth.middlewares.js"
+import jwt from "jsonwebtoken"
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -55,7 +57,7 @@ const registerUser = asyncHandler( async(req, res) => {
         throw new ApiError(409, "User with email or username already exists")
     }
     // console.log(req.files)
-    const avatarLocalPath = req.files?.avatar[0]?.path;
+    const avatarLocalPath = req.files?.avatar?.[0]?.path;
     // const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
     let coverImageLocalPath;
@@ -108,8 +110,7 @@ const loginUser = asyncHandler(async (req, res) => {
     // send cookie
 
     const {username, email, password} = req.body
-
-    if(!username || !email) {
+    if(!username && !email) {
         throw new ApiError(400, "Username or email is required")
     }
 
@@ -154,7 +155,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
     await Users.findByIdAndUpdate(
-        req.Users._id,
+        req.user._id,
         {
             $set:{
                 refreshToken: undefined
@@ -167,7 +168,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
     }
 
     return res
@@ -176,5 +177,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "User logged out"))
 })
+
+
 
 export { registerUser, loginUser, logoutUser } 
