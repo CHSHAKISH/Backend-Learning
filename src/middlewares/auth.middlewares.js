@@ -25,6 +25,16 @@ export const verifyJWT = asyncHandler(async(req, res, next) => {
     
         req.user = user
         next()
+
+        // req.user = user: This is a core Express pattern. 
+        // It dynamically appends a new property named user 
+        // directly onto the current request object. 
+        // Now, whatever controller runs after this middleware 
+        // can simply call req.user to instantly know which user is logged in.
+
+        // next(): Tells Express, "Authentication is complete 
+        // and successful! Move on to the actual route controller."
+
     } catch (error) {
         console.error(error)
         throw new ApiError(401, error?.message || "Invalid Access Token")

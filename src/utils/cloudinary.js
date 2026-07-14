@@ -1,6 +1,11 @@
 import { v2 as cloudinary } from "cloudinary"
 import fs from "fs"
 
+// import fs from "fs": Imports Node.js’s native File System module. 
+// You do not need to install this; it is built straight into Node.js. 
+// It allows your backend to read, write, or delete files directly 
+// on your server storage.
+
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
